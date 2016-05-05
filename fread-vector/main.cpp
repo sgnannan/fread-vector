@@ -34,7 +34,7 @@ int main()
 
 	int TimeStart = GetTickCount();
 
-	MyCompress(voutbuff, vinbuff);
+	CompressInc(voutbuff, vinbuff);
 
 	int TotalTime = (GetTickCount() - TimeStart) / 1000;
 	printf("time is %d!\n", TotalTime);

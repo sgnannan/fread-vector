@@ -9,4 +9,8 @@ void MyCompress(
   std::vector<unsigned char> &outBuf,
   const std::vector<unsigned char> &inBuf);
 
+void CompressInc(
+	std::vector<unsigned char> &outBuf,
+	const std::vector<unsigned char> &inBuf);
+
 #endif
