@@ -44,7 +44,7 @@ void MyCompress(
 
 	outBuf.resize(propsSize + destLen);
 
-	FILE *file = fopen("data1.dat", "w");
+	FILE *file = fopen("data1.dat", "wb+");
 
 	int zero = 0;
 	fwrite(&outBuf[0],1,propsSize,file);
@@ -104,10 +104,12 @@ void CompressInc(
 	SRes res = LzmaEnc_SetProps(enc, &props);
 	assert(res == SZ_OK);
 
+	unsigned char tempprops[5];
+
 	unsigned propsSize = LZMA_PROPS_SIZE;
 	outBuf.resize(propsSize);
 
-	res = LzmaEnc_WriteProperties(enc, &outBuf[0], &propsSize);
+	res = LzmaEnc_WriteProperties(enc, tempprops, &propsSize);
 	assert(res == SZ_OK && propsSize == LZMA_PROPS_SIZE);
 
 	VectorInStream inStream = { &VectorInStream_Read, &inBuf, 0 };
@@ -118,15 +120,16 @@ void CompressInc(
 		0, &SzAllocForLzma, &SzAllocForLzma);
 		assert(res == SZ_OK);
 
-		printf("sgnannan: OK!");
+	printf("sgnannan: OK!\n");
+	printf("size of outbuf is %d\n", outBuf.size());
 
 	LzmaEnc_Destroy(enc, &SzAllocForLzma, &SzAllocForLzma);
 
-	FILE *file = fopen("data2.dat", "w");
+	FILE *file = fopen("data2.dat", "wb+");
 
 	size_t resLen = inBuf.size();
 	int zero = 0;
-	fwrite(&outBuf[0],1,propsSize,file);
+	fwrite(tempprops,1,propsSize,file);
 	fwrite(&resLen,1,4,file);
 	fwrite(&zero,1,4,file);
 	fwrite(&outBuf,1,outBuf.size(),file);
