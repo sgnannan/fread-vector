@@ -123,17 +123,18 @@ void CompressInc(
 	printf("sgnannan: OK!\n");
 	printf("size of outbuf is %d\n", outBuf.size());
 
-	LzmaEnc_Destroy(enc, &SzAllocForLzma, &SzAllocForLzma);
-
 	FILE *file = fopen("data2.dat", "wb+");
 
+	printf("size of outbuf is %d\n", outBuf.size());
 	size_t resLen = inBuf.size();
 	int zero = 0;
 	fwrite(tempprops,1,propsSize,file);
 	fwrite(&resLen,1,4,file);
 	fwrite(&zero,1,4,file);
-	fwrite(&outBuf,1,outBuf.size(),file);
+	fwrite(&outBuf[0],1,outBuf.size(),file);
 
 	fclose(file);
+
+	LzmaEnc_Destroy(enc, &SzAllocForLzma, &SzAllocForLzma);
 
 }
